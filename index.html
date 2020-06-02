@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Weight dynamics</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Weight dynamics</h1>
+    </header>
+
+    <h2>Total lost <u class="total-lost"></u> kilograms.</h2>
+    <h3>Keep going! You doing well!</h3>
+
+    <div class="today-weight">
+      <div class="today-date"></div>
+      <label>
+        Weight, kg:
+        <input class="weight-input" type="number" name="weight" />
+      </label>
+      <label>
+        Calories, cal:
+        <input class="calories-input" type="number" name="calories" />
+      </label>
+      <input class="submit-weight-button" type="submit" value="V" />
+      <input class="reset-weight-button" type="reset" value="X" />
+    </div>
+
+    <table class="weight-table"></table>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
