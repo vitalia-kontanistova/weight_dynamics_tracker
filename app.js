@@ -97,8 +97,6 @@ function transformEntryIntoArray() {
 
 function showTotalLost() {
   let weightEntries = takeWeightLocalStorage();
-  // let firstEntry = weightEntries[0];
-  // let lastEntry = weightEntries[weightEntries.length - 1];
   let firstEntry;
   let lastEntry;
   let totalLost;
@@ -235,7 +233,6 @@ function addSaveCancelBtn() {
 }
 
 function temp() {
-  //   const editWeightButton = document.querySelector(".edit-weight-btn");
   //   console.log(editWeightButton);
   //   console.log(document.querySelector(".edit-weight-btn"));
   console.log(weekWeightEntries);
