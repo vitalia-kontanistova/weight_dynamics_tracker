@@ -32,10 +32,6 @@ document.addEventListener("DOMContentLoaded", showTotalLost);
 submitWeightButton.addEventListener("click", saveEntryLocalStorage);
 document.addEventListener("DOMContentLoaded", showWeekWeight);
 
-//// temp
-// document.addEventListener("DOMContentLoaded", temp);
-////
-
 function showTodayDate() {
   let today = new Date().toDateString();
   todayDiv.innerText = "Today: " + today;
@@ -219,7 +215,6 @@ function clearWeekWeightTable() {
 
 function addSaveCancelBtn() {
   let buttonTr = document.createElement("tr");
-  // buttonTr.classList = "button-row";
   let emptyEntryTd = document.createElement("td");
   let saveBtnEntryTd = document.createElement("td");
   saveBtnEntryTd.append(saveChangesBtn);
@@ -232,29 +227,23 @@ function addSaveCancelBtn() {
   weekWeightTable.append(buttonTr);
 }
 
-function temp() {
-  //   console.log(editWeightButton);
-  //   console.log(document.querySelector(".edit-weight-btn"));
-  console.log(weekWeightEntries);
-}
-
 function cancelChanges() {
   clearWeekWeightTable();
   showWeekWeight();
 }
 
 function saveChanges() {
-  let trS = weekWeightTable.childNodes;
+  let trS = weekWeightTable.childNodes; //NodeList of <tr> elements from html table
   let weekWeight = [];
 
   //writing changed data from "input" into the week weight table
   for (let i = 1; i < trS.length - 1; i++) {
     let weightData = [];
-    let tdS = trS[i].childNodes;
+    let tdS = trS[i].childNodes; //NodeList of <td> elements from <tr> number i
 
-    let date = tdS[0].firstChild.value;
-    let weight = tdS[1].firstChild.value;
-    let calories = tdS[2].firstChild.value;
+    let date = tdS[0].firstChild.value; //Date from value of first input
+    let weight = tdS[1].firstChild.value; //Weight from value of second input
+    let calories = tdS[2].firstChild.value; //Calories from value of third input
 
     //adding data if user has changed date
     if (date != "") {
@@ -268,13 +257,10 @@ function saveChanges() {
   }
 
   //writing weight progress into local storage depending on quantity of entries
-  //temp
   let weightLocalStorage = [];
-  //temp
   if (weekWeight.length < 7) {
-    localStorage.setItem("weightEntries", JSON.stringify(weekWeight));
+    weightLocalStorage = weekWeight;
   } else {
-    // let
     weightLocalStorage = takeWeightLocalStorage();
     let weightLSLength = weightLocalStorage.length;
     weightLocalStorage.splice(
@@ -288,25 +274,40 @@ function saveChanges() {
       weekWeight[5],
       weekWeight[6]
     );
-    localStorage.setItem("weightEntries", JSON.stringify(weightLocalStorage));
   }
+  localStorage.setItem("weightEntries", JSON.stringify(weightLocalStorage));
 
-  showTotalLost();
-  cancelChanges();
-
-  // checkDateSequance(weightLocalStorage);
+  if (validateChanges(weightLocalStorage)) {
+    showTotalLost();
+    cancelChanges();
+  }
 }
 
-function checkDateSequance(weightTable) {
+function validateChanges(weightTable) {
   for (let i = 0; i < weightTable.length - 1; i++) {
-    console.log("checkDateSequance");
-    let currentEntry = weightTable[i];
-    // [0];
-    let nextEntry = weightTable[i + 1];
-    // [0];
+    let currentDate = Date.parse(weightTable[i][0]);
+    let nextDate = Date.parse(weightTable[i + 1][0]);
+    let differense = nextDate - currentDate;
 
-    // currentDate
-
-    console.log(currentEntry + " - " + nextEntry);
+    if (differense != 86400000) {
+      alert("You have been mistaken somewhere in dates.");
+      return false;
+    }
   }
+
+  for (let i = 0; i < weightTable.length; i++) {
+    let currentWeight = weightTable[i][1];
+    if (currentWeight < 11 || currentWeight > 250) {
+      alert("You have been mistaken somewhere in weights.");
+      return false;
+    }
+
+    let currentCallories = weightTable[i][2];
+    if (currentCallories < 0 || currentCallories > 5001) {
+      alert("You have been mistaken somewhere in callories.");
+      return false;
+    }
+  }
+
+  return true;
 }
